@@ -1,4 +1,4 @@
-# DeFi Mullet Hackathon #1 — Builder Guide
+# DeFi Mullet Hackathon #1 — Builder Guide (LLM.md)
 
 > **This file is designed for both humans and LLM coding agents.**
 > Drop this file into your agent (Cursor, Codex, Claude Code, Windsurf, etc.) and ask it to guide you through the hackathon step by step.
@@ -13,15 +13,15 @@ You are a hackathon coach for the **DeFi Mullet Hackathon #1**. Your job is to g
 
 1. **Onboard** — Greet the participant. Ask if they've registered. If not, send them to the registration link. Confirm key dates.
 2. **Discover** — Ask what the participant is interested in building (or brainstorm with them). Help them pick a track.
-3. **Plan** — Based on the chosen track, outline a minimal viable project scope that can be built in ~3 days.
+3. **Plan** — Based on the chosen track, outline a minimal viable project scope that can be built in ~5 days.
 4. **Build** — Help scaffold the project, write code, integrate the Earn API, and debug issues.
 5. **Submit** — Before the deadline, remind them of ALL submission requirements: working demo, tweet, write-up, and Google Form. Help them draft the tweet and write-up.
 
 ### Behavior Rules
 
-- Always be aware of the current date. If it is past April 14 (see the time window below), inform the participant that submissions are closed.
+- Always be aware of the current date. If it is past April 14, inform the participant that submissions are closed.
 - When the participant asks "what should I build?", use the **Track Ideas & Brainstorm** section below to spark ideas. Ask follow-up questions about their skills, interests, and available time.
-- When helping with code, always use the **Earn API Reference** section below as your technical source of truth.
+- When helping with code, always use the **Earn API Reference** section below as your technical source of truth. Pay special attention to the two-layer architecture (Earn Data API + Composer).
 - Proactively remind the participant about common pitfalls (see **Common Pitfalls** section).
 - When it's April 13 or later, switch to "submission mode": prioritize helping them record a demo, draft the tweet thread, and fill out the submission form.
 
@@ -41,7 +41,7 @@ You are a hackathon coach for the **DeFi Mullet Hackathon #1**. Your job is to g
 
 ### What is the "DeFi Mullet"?
 
-Users see a simple one-click deposit. Developers know what powers it — 20+ protocols, 60+ chains, and an entire infrastructure layer. Clean in the front, wild in the back.
+Users see a simple one-click deposit. Developers know what powers it — 20+ protocols, multi-chain execution, and an entire infrastructure layer. Clean in the front, wild in the back.
 
 ---
 
@@ -79,7 +79,7 @@ Use this as your master checklist. Ask your coding agent to track your progress.
 - [ ] Fill out the registration form: https://forms.gle/RFLGG8RiEKC3AqnQA
 - [ ] Join the Telegram builder group: [TODO — tg link]
 - [ ] (Optional, for Chinese speakers) Add WeChat: **brucexu-eth**, reply "DeFi Mullet"
-- [ ] Register as a LI.FI integrator on https://li.fi/plans/ and get your API credentials (see Earn API section)
+- [ ] Create an account on [LI.FI Portal](https://portal.li.fi/) and get your API key
 
 ### Phase 2: Choose Your Track (Day 0–1)
 - [ ] Read the track descriptions below
@@ -89,7 +89,9 @@ Use this as your master checklist. Ask your coding agent to track your progress.
 
 ### Phase 3: Build (Day 1–5)
 - [ ] Set up your project repo
-- [ ] Integrate the Earn API (Discovery → Quote → Execute → Verify)
+- [ ] Integrate the Earn API — two layers:
+  - [ ] **Earn Data API** — vault discovery, portfolio & positions
+  - [ ] **Composer** — transaction building & execution (deposit/withdraw)
 - [ ] Build your product layer on top
 - [ ] Test with real funds (small amounts — see FAQ on test funds)
 - [ ] Deploy or prepare a screen-recorded demo
@@ -114,9 +116,9 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 **Build a yield product** — dashboard, aggregator, portfolio manager, treasury tool, or integrate Earn into an existing project.
 
 **Example ideas:**
-- A unified dashboard comparing APY across 20+ protocols with one-click deposit
+- A unified dashboard comparing APY (1d/7d/30d) across 20+ protocols with one-click deposit via Composer
 - A stablecoin treasury tool that auto-allocates idle assets to the highest-yielding vaults
-- A portfolio manager showing all positions across chains with rebalancing suggestions
+- A portfolio manager showing all positions via `/v1/earn/portfolio` with rebalancing suggestions
 - An "Earn" module integrated into your existing DeFi app (only the integration is judged)
 
 **Brainstorm prompts (ask the participant):**
@@ -131,9 +133,9 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 **AI-powered yield tools** — agents, chatbots, LLM-driven analysis, natural language DeFi.
 
 **Example ideas:**
-- An agent that accepts commands like "put my USDC into the safest vault above 5% APY on Arbitrum" — finds, evaluates, and executes
-- A position monitor that auto-rebalances when better opportunities appear
-- An LLM-powered risk scoring system that rates vault safety
+- An agent that accepts commands like "put my USDC into the safest vault above 5% APY on Arbitrum" — calls `/v1/earn/vaults` to discover, `/v1/quote` to build tx, and executes
+- A position monitor that reads `/v1/earn/portfolio` and auto-rebalances when better opportunities appear
+- An LLM-powered risk scoring system that rates vault safety using protocol metadata from `/v1/earn/protocols`
 - A chat interface where users describe goals in plain English and the agent builds a yield strategy
 
 **Brainstorm prompts:**
@@ -148,9 +150,9 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 **Make DeFi yield as simple as a savings account.** Best UX wins.
 
 **Example ideas:**
-- A single "Earn" button flow — 3 taps from open to deposited
+- A single "Earn" button flow — 3 taps from open to deposited, powered by Composer's any-token cross-chain deposits
 - A mobile-first deposit experience designed for non-crypto users
-- A portfolio view that makes yield feel as familiar as checking a bank balance
+- A portfolio view using `/v1/earn/portfolio` that makes yield feel as familiar as checking a bank balance
 - An onboarding wizard that guides first-time users into their first vault
 
 **Brainstorm prompts:**
@@ -165,11 +167,11 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 **Build tools for other builders** — SDKs, CLI tools, plugins, frameworks, starter templates.
 
 **Example ideas:**
-- A TypeScript SDK wrapper that simplifies the Earn API into 3 function calls
+- A TypeScript SDK wrapper that abstracts Earn Data API + Composer into 3 function calls
 - A Hardhat plugin for testing vault integrations locally
-- A CLI tool: `earn deposit --chain arbitrum --token USDC --amount 500 --strategy safest`
-- A Postman/Bruno collection with pre-configured Earn API requests
-- A starter template with wallet connection, Earn API, and UI components pre-wired
+- A CLI tool: `earn deposit --chain base --token USDC --amount 500 --strategy safest`
+- A Postman/Bruno collection with pre-configured Earn API requests for all endpoints
+- A starter template with wallet connection, Earn Data API, Composer, and UI components pre-wired
 
 **Brainstorm prompts:**
 - What friction did you hit when you first looked at the Earn API?
@@ -183,9 +185,9 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 **Anything creative using the Earn API.** Surprise the judges.
 
 **Example ideas:**
-- A Telegram bot: `/earn 500 USDC` → finds best vault → confirms → executes
+- A Telegram bot: `/earn 500 USDC` → calls `/v1/earn/vaults` → finds best vault → `/v1/quote` → executes
 - A Discord bot for DAO treasury management
-- On-chain analytics dashboard showing yield trends across protocols
+- On-chain analytics dashboard showing yield trends across protocols and chains
 - A yield-based game (e.g., "Yield Wars" — compete for best strategy)
 - Generative art powered by live APY data
 
@@ -198,99 +200,271 @@ Each track has a description, example ideas, and brainstorm prompts your agent c
 
 ## 🔧 Earn API Reference
 
-### Core Concept
+### Architecture: Two Layers
 
-The Earn API has one core loop:
-
-```
-Discover → Quote → Execute → Verify
-```
-
-1. **Discover** — Find yield opportunities (vaults/strategies) across protocols and chains
-2. **Quote** — Get executable transaction data for a deposit
-3. **Execute** — Submit the transaction(s) via the user's wallet
-4. **Verify** — Check the user's position to confirm the deposit
-
-### What LI.FI Earn Provides
-
-- **20+ vault protocols**: Morpho, Aave, Euler, Pendle, Ethena, EtherFi, and more
-- **60+ chains**: One integration covers all of them
-- **One-click deposits**: Swap + deposit in a single transaction via Composer
-- **Vault discovery**: Filter opportunities by chain, token, APY, protocol, risk
-
-### API Flow (Step by Step) TODO need to update according to actual Earn API
-
-#### Step 0: Register as an Integrator
-
-Before any API calls, register for an integrator ID. Include this ID in every request.
-
-→ See LI.FI docs for integrator registration: [TODO — docs link]
-
-#### Step 1: Discover Opportunities
+LI.FI Earn is a **unified DeFi yield API** with two layers:
 
 ```
-GET /opportunities
+┌─────────────────────────────────────────────────────┐
+│                   LI.FI Earn                        │
+│                                                     │
+│  Layer 1: Earn Data API                             │
+│  ┌───────────────────────────────────────────────┐  │
+│  │ Vault discovery, metadata, APY, TVL,          │  │
+│  │ portfolio positions & returns                 │  │
+│  │ Endpoints: /v1/earn/vaults, /v1/earn/chains,  │  │
+│  │ /v1/earn/protocols, /v1/earn/portfolio         │  │
+│  └───────────────────────────────────────────────┘  │
+│                                                     │
+│  Layer 2: Composer (Transaction Execution)          │
+│  ┌───────────────────────────────────────────────┐  │
+│  │ Swap + bridge + deposit in one transaction    │  │
+│  │ Endpoint: /v1/quote                           │  │
+│  └───────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
 ```
 
-Query parameters for filtering:
-- `chain` — filter by chain (e.g., arbitrum, ethereum, base)
-- `token` — filter by deposit token (e.g., USDC, ETH)
-- `protocol` — filter by protocol (e.g., morpho, aave)
-- `sort` — sort by APY, TVL, etc.
+Together, they give you a **single integration point** to discover yield opportunities AND execute deposits — same-chain or cross-chain.
 
-Response includes for each opportunity:
-- Opportunity ID
-- Protocol name
-- Chain
-- Deposit token(s)
-- Current APY
-- TVL
-- Risk information
-- Minimum deposit
-
-#### Step 2: Build Transaction (Get Quote)
+### The Core Flow
 
 ```
-POST /quote
+User wants top APY for USDC
+        │
+        ▼
+   ┌─────────┐    GET /v1/earn/vaults       ┌──────────────┐
+   │  Your   │ ──────────────────────────►  │ Earn Data API │
+   │  App    │ ◄──────────────────────────  │ (Data Service)│
+   │         │    [{vault1, APY: yy%},      └──────────────┘
+   │         │     {vault2, APY: nn%}...]
+   │         │
+   │         │  User picks vault & clicks "Deposit"
+   │         │
+   │         │    GET /v1/quote              ┌──────────────┐
+   │         │ ──────────────────────────►  │   Composer    │
+   │         │ ◄──────────────────────────  │(Tx Execution) │
+   │         │    {transactionRequest}       └──────────────┘
+   └─────────┘
+        │
+        ▼  Send tx to wallet → 1-click sign → done
 ```
 
-Request body:
-- `opportunityId` — from Step 1
-- `walletAddress` — user's wallet
-- `amount` — deposit amount (in token's smallest unit — mind the decimals!)
-- `slippage` — e.g., 0.005 for 0.5%
+### Authentication
 
-Response includes:
-- Approval transaction (if token needs approval)
-- Deposit transaction (the actual vault deposit)
-- Quote expiry time
+1. Create an account on **[LI.FI Portal](https://portal.li.fi/)**
+2. Generate a dedicated **API key**
+3. Include the API key in every request
 
-⚠️ Quotes expire. Do NOT build a tx and wait 10 minutes before sending.
+This is step zero — do this before writing any code.
 
-#### Step 3: Execute Transaction
+---
 
-Use the returned calldata to send transactions via the user's wallet:
-1. First, send the **approval tx** (if required)
-2. Then, send the **deposit tx**
+### Layer 1: Earn Data API
 
-Use any web3 library (ethers.js, viem, wagmi, etc.) to submit.
+Full documentation: [docs.li.fi/earn/overview](https://docs.li.fi/earn/overview)
 
-#### Step 4: Verify Position
+#### `GET /v1/earn/vaults` — Discover Vaults
+
+List all supported vaults with filtering.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `chainId` | string | Filter by chain (e.g., `ethereum`, `base`) |
+| `asset` | string | Filter by underlying asset address |
+| `minTvl` | number | Minimum TVL in USD |
+| `sortBy` | string | Sort field (e.g., `apy`, `tvl`) |
+
+**Example response:**
+
+```json
+{
+  "vaults": [
+    {
+      "address": "0x7BfA7C4f149E7415b73bdeDfe609237e29CBF34A",
+      "network": "base",
+      "protocol": "morpho",
+      "underlyingAssets": {
+        "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      "apy": {
+        "1d": 4.82,
+        "7d": 5.01,
+        "30d": 4.95
+      },
+      "tvl": 125000000,
+      "type": "ERC-4626"
+    }
+  ]
+}
+```
+
+**APY data:** Available in 1-day, 7-day, and 30-day time ranges. Updated periodically (not real-time).
+
+#### `GET /v1/earn/vaults/:network/:address` — Single Vault Detail
+
+Returns full metadata for a specific vault.
+
+#### `GET /v1/earn/chains` — Supported Chains
+
+Returns list of all chains supported by Earn.
+
+#### `GET /v1/earn/protocols` — Supported Protocols
+
+Returns list of all supported protocols with metadata.
+
+#### `GET /v1/earn/portfolio/:userAddress/positions` — User Portfolio
+
+All DeFi positions for a given wallet address.
+
+**Example response:**
+
+```json
+{
+  "positions": [
+    {
+      "chainId": 1,
+      "protocolName": "morpho",
+      "asset": {
+        "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "name": "Morpho USDC Vault",
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      "balanceUsd": "34.05",
+      "balanceNative": "0.016"
+    }
+  ]
+}
+```
+
+---
+
+### Layer 2: Composer (Transaction Execution)
+
+Full documentation: [docs.li.fi/composer/overview](https://docs.li.fi/composer/overview)
+
+Composer orchestrates multi-step DeFi flows (swap → bridge → deposit) into a **single ready-to-sign transaction**.
+
+#### `GET /v1/quote` — Build Transaction
+
+**Base URL:** `https://li.quest/v1/quote`
+
+**⚠️ This is a GET request with query parameters, NOT a POST.**
+
+**Example: Deposit USDC into a Morpho vault on Base**
 
 ```
-GET /positions?walletAddress=0x...
+GET https://li.quest/v1/quote
+  ?fromChain=8453
+  &toChain=8453
+  &fromToken=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+  &toToken=0x7BfA7C4f149E7415b73bdeDfe609237e29CBF34A
+  &fromAddress=0xYOUR_WALLET
+  &toAddress=0xYOUR_WALLET
+  &fromAmount=1000000
 ```
 
-Response includes:
-- Current balance in each vault
-- Accrued yield
-- Underlying tokens
+**Parameters explained:**
 
-### Composer (Advanced)
+| Parameter | Description |
+|---|---|
+| `fromChain` | Chain ID where user's tokens are (e.g., `8453` for Base) |
+| `toChain` | Chain ID where the vault is |
+| `fromToken` | Token address user is depositing from |
+| `toToken` | **Vault address** (the vault IS the "toToken") |
+| `fromAddress` | User's wallet address |
+| `toAddress` | User's wallet address |
+| `fromAmount` | Amount in smallest unit (e.g., `1000000` = 1 USDC with 6 decimals) |
 
-Composer enables **swap + deposit in one transaction**. The user can deposit from any token on any chain — the API handles bridging and swapping automatically.
+**Response includes:**
+- Gas estimate
+- Slippage protection
+- Ready-to-sign `transactionRequest`
 
-→ Full API docs: [TODO — docs link]
+#### What Composer Can Do
+
+| Scenario | Description |
+|---|---|
+| **Same-chain deposit** | USDC on Base → Morpho vault on Base (single tx) |
+| **Cross-chain deposit** | USDC on Arbitrum → Morpho vault on Base (bridge + deposit in one tx) |
+| **Any-token deposit** | ETH on Ethereum → USDC vault on Base (swap + bridge + deposit) |
+| **Withdrawals** | Exit vault position back to any token on any chain |
+
+This is the "mullet" — the user sees one click, Composer handles the multi-step DeFi plumbing behind the scenes.
+
+---
+
+### Typical Full Integration Flow
+
+```
+Step 1: Your app calls GET /v1/earn/vaults
+        → Earn Data API fetches from Data Service
+        → Returns vault list (APY, TVL, protocol, chain)
+        → You display this to the user
+
+Step 2: User picks a vault
+        → Your app calls GET /v1/earn/vaults/:network/:address
+        → Shows vault detail page
+
+Step 3: User clicks "Deposit"
+        → Your app calls GET /v1/quote with fromToken + toToken (= vault address)
+        → Composer builds the full transaction (swap + bridge + deposit if needed)
+        → Returns ready-to-sign transactionRequest
+        → User signs in wallet (1-click)
+
+Step 4: User checks portfolio
+        → Your app calls GET /v1/earn/portfolio/:userAddress/positions
+        → Shows all positions with current value and returns
+```
+
+---
+
+### Supported Chains (21)
+
+Arbitrum, Avalanche, Base, Berachain, BNB Chain, Celo, Ethereum, Gnosis Chain, HyperEVM, Katana, Linea, Mantle, MegaETH, Monad, OP Mainnet, Polygon POS, Scroll, Soneium, Sonic, Unichain, World Chain
+
+### Supported Protocols (20+)
+
+| Protocol | Data API | Composer |
+|---|---|---|
+| Aave | ✅ | ✅ |
+| Avon | ✅ | ✅ |
+| Concrete | — | ✅ |
+| Ethena | ✅ | ✅ |
+| Etherfi | ✅ | ✅ |
+| Euler | ✅ | ✅ |
+| Felix Vanilla | — | ✅ |
+| Fluid | ✅ | ✅ |
+| Hyperlend (HyperEVM) | ✅ | ✅ |
+| Hypurrfi | ✅ | ✅ |
+| Kelp | ✅ | ✅ |
+| Kinetiq (kHYPE) | ✅ | ✅ |
+| Maple | ✅ | ✅ |
+| Morpho V1 & V2 | ✅ | ✅ |
+| Neverland | ✅ | ✅ |
+| Pendle | ✅ | ✅ |
+| Spark | ✅ | ✅ |
+| Tokemak (autoUSD) | — | ✅ |
+| Upshift | ✅ | ✅ |
+| USDai | ✅ | ✅ |
+| YO | ✅ | ✅ |
+
+**Note:** Some protocols are Composer-only (can deposit but no data in Earn Data API). Some have full support in both layers.
+
+### Technical Details
+
+| Item | Value |
+|---|---|
+| API Rate Limit | 150 requests per second |
+| Authentication | API key via [LI.FI Portal](https://portal.li.fi/) |
+| APY Update Frequency | Periodic sync (not real-time) |
+| APY Time Ranges | 1-day, 7-day, 30-day |
+| Vault Standard | ERC-4626 |
+| API Docs | [docs.li.fi](https://docs.li.fi) |
+| Composer Docs | [docs.li.fi/composer/overview](https://docs.li.fi/composer/overview) |
+| Earn Data Docs | [docs.li.fi/earn/overview](https://docs.li.fi/earn/overview) |
 
 ---
 
@@ -300,12 +474,14 @@ These are the most frequent mistakes. Review before building:
 
 | Pitfall | What goes wrong | How to avoid |
 |---|---|---|
-| **Missing Integrator ID** | API rejects all requests | Include your integrator ID in every request header |
-| **Wrong approval spender** | Approval tx succeeds but deposit fails | Always use the spender address from the API response, never hardcode |
-| **Decimal mismatch** | Deposit 1 USDC but send 1000000000000000000 | USDC = 6 decimals, ETH = 18. Always check per token |
-| **Stale quote** | Transaction reverts | Build and execute the tx promptly. Don't let quotes sit |
+| **Missing API key** | API rejects all requests | Get your key from [LI.FI Portal](https://portal.li.fi/), include in every request |
+| **POST instead of GET for /quote** | Request fails | Composer's `/v1/quote` is a **GET** with query params, not a POST |
+| **Wrong toToken for deposits** | Quote returns wrong result | `toToken` should be the **vault address**, not the underlying token |
+| **Decimal mismatch** | Deposit 1 USDC but send 1e18 | USDC = 6 decimals, ETH = 18 — always check `decimals` from vault response |
+| **Stale quote** | Transaction reverts | Build and execute the tx promptly. Don't let quotes sit for minutes |
 | **No gas token** | Transaction can't be sent | Ensure wallet has native token (ETH, MATIC, etc.) for gas |
-| **Chain mismatch** | Wallet on wrong network | Wallet must be connected to the same chain as the opportunity |
+| **Chain mismatch** | Wallet on wrong network | Wallet must be on `fromChain` when signing the transaction |
+| **Ignoring Composer for cross-chain** | Building manual bridge+deposit flows | Use Composer — it handles swap + bridge + deposit in one tx |
 | **Submitting outside window** | Entry rejected | Schedule your tweet for April 14 within your region's window |
 
 ---
@@ -358,7 +534,7 @@ Your tweet/thread MUST include:
 ### 3. Brief Write-Up
 Cover these points:
 - What your project does
-- How it uses the Earn API
+- How it uses the Earn API (both Data API and Composer)
 - What you'd build next
 - Any feedback on the API experience
 
@@ -373,7 +549,9 @@ Fill out the form with your project details, links, and feedback: [TODO — link
 |---|---|
 | Telegram (all hackers) | [TODO — tg link] |
 | WeChat (APAC / Chinese) | Add **brucexu-eth**, reply "DeFi Mullet" |
-| API Docs | [TODO — docs link] |
+| API Docs (Earn Data) | [docs.li.fi/earn/overview](https://docs.li.fi/earn/overview) |
+| API Docs (Composer) | [docs.li.fi/composer/overview](https://docs.li.fi/composer/overview) |
+| LI.FI Portal (API key) | [portal.li.fi](https://portal.li.fi/) |
 | Starter Template Repo | [TODO — repo link] |
 
 Daily office hours are scheduled across time zones. Post async questions in the community channel anytime — the DevRel team monitors throughout the week.
@@ -415,12 +593,13 @@ If you're a coding agent helping a participant, here's the fastest path to a wor
 ```
 1. Clone the starter template: [TODO — repo link]
 2. Install dependencies: npm install
-3. Set integrator ID in .env
+3. Get API key from https://portal.li.fi/ and set in .env
 4. Run the dev server: npm run dev
 5. The starter template has:
    - Wallet connection (wagmi/RainbowKit)
-   - Earn API discovery call (pre-wired)
-   - Basic deposit flow UI
+   - Earn Data API vault discovery (pre-wired)
+   - Composer quote + deposit flow
+   - Basic UI
 6. Your job: customize the product layer on top
 ```
 
@@ -429,31 +608,47 @@ If you're a coding agent helping a participant, here's the fastest path to a wor
 The absolute minimum to have a working Earn integration:
 
 ```typescript
-// 1. Discover opportunities
-const opportunities = await fetch('https://li.fi/v1/opportunities?chain=arbitrum&token=USDC', {
-  headers: { 'x-lifi-integrator': 'YOUR_INTEGRATOR_ID' }
-}).then(r => r.json());
+// Step 0: Get your API key from https://portal.li.fi/
 
-// 2. Pick an opportunity and build a transaction
-const quote = await fetch('https://li.fi/v1/quote', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-lifi-integrator': 'YOUR_INTEGRATOR_ID'
-  },
-  body: JSON.stringify({
-    opportunityId: opportunities[0].id,
-    walletAddress: '0xYOUR_WALLET',
-    amount: '1000000', // 1 USDC (6 decimals)
-    slippage: 0.005
-  })
-}).then(r => r.json());
+const API_KEY = 'YOUR_API_KEY';
+const headers = { 'x-lifi-api-key': API_KEY };
 
-// 3. Execute: send approval tx, then deposit tx via your wallet
-// 4. Verify: check /positions?walletAddress=0x...
+// Step 1: Discover vaults
+const vaults = await fetch(
+  'https://li.quest/v1/earn/vaults?chainId=base&asset=USDC&sortBy=apy',
+  { headers }
+).then(r => r.json());
+
+// Step 2: Pick a vault — toToken IS the vault address
+const vault = vaults.vaults[0];
+console.log(`${vault.protocol} on ${vault.network}: ${vault.apy['7d']}% APY`);
+
+// Step 3: Build transaction via Composer (⚠️ GET request, not POST)
+const quoteParams = new URLSearchParams({
+  fromChain: '8453',                    // Base chain ID
+  toChain: '8453',                      // Same chain for same-chain deposit
+  fromToken: vault.underlyingAssets.address, // e.g., USDC address
+  toToken: vault.address,               // Vault address = toToken
+  fromAddress: '0xYOUR_WALLET',
+  toAddress: '0xYOUR_WALLET',
+  fromAmount: '1000000'                 // 1 USDC (6 decimals)
+});
+
+const quote = await fetch(
+  `https://li.quest/v1/quote?${quoteParams}`,
+  { headers }
+).then(r => r.json());
+
+// Step 4: Execute — send quote.transactionRequest via user's wallet (ethers/viem/wagmi)
+
+// Step 5: Verify — check user's positions
+const positions = await fetch(
+  `https://li.quest/v1/earn/portfolio/0xYOUR_WALLET/positions`,
+  { headers }
+).then(r => r.json());
 ```
 
-⚠️ **Note:** The above URLs and parameters are illustrative. Always check the official API docs for exact endpoints and request format: [TODO — docs link]
+⚠️ **Always check the official docs for exact endpoint details:** [docs.li.fi](https://docs.li.fi)
 
 ---
 
@@ -466,7 +661,7 @@ START
 ├── Not registered?
 │   → Send to registration form
 │   → Help join Telegram/WeChat
-│   → Help register as LI.FI integrator
+│   → Help create account on portal.li.fi and get API key
 │
 ├── Registered but no idea?
 │   → Ask: "What's your background? (frontend / backend / full-stack / AI / design?)"
@@ -477,12 +672,14 @@ START
 ├── Has an idea but hasn't started?
 │   → Help define MVP scope (what's the smallest working version?)
 │   → Help clone the starter template
-│   → Walk through the Earn API flow together
+│   → Walk through the two-layer API architecture:
+│       • Earn Data API for discovery + portfolio
+│       • Composer for transaction execution
 │   → Set up the project structure
 │
 ├── Building?
-│   → Help with Earn API integration
-│   → Debug issues (check Common Pitfalls first)
+│   → Help with Earn API integration (check: are they using GET for /quote?)
+│   → Debug issues (check Common Pitfalls first — especially decimal mismatches and toToken confusion)
 │   → Review code and suggest improvements
 │   → Remind about submission requirements when relevant
 │
