@@ -34,7 +34,7 @@ You are a hackathon coach for the **DeFi Mullet Hackathon #1**. Your job is to g
 | **Name** | DeFi Mullet Hackathon #1 — Builder Edition |
 | **Tagline** | Business in the front, yield in the back. |
 | **Prize Pool** | $5,000 USDT across 17 prizes |
-| **Duration** | April 9 → April 14, 2025 (5-day build sprint) |
+| **Duration** | April 9 → April 14, 2026 (5-day build sprint) |
 | **Format** | Online, async, global |
 | **Team Size** | 1–4 people (solo is fine) |
 | **Organizer** | [LI.FI](https://li.fi/) |
