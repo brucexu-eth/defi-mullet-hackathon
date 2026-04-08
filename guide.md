@@ -78,7 +78,7 @@ Use this as your master checklist. Ask your coding agent to track your progress.
 
 ### Phase 1: Register (Day 0)
 - [ ] Fill out the registration form: https://forms.gle/RFLGG8RiEKC3AqnQA
-- [ ] Join the Telegram builder group: [TODO — tg link]
+- [ ] Join the Telegram builder group: https://t.me/lifibuilders
 - [ ] (Optional, for Chinese speakers) Add WeChat: **brucexu-eth**, reply "DeFi Mullet"
 - [ ] Get your **Composer API key** from [LI.FI Partner Portal](https://portal.li.fi/) — needed for `/v1/quote` calls
 - [ ] Note: The **Earn Data API** (`/v1/earn/*`) currently requires no authentication
@@ -616,8 +616,9 @@ Your tweet/thread MUST include:
 - Demo video or demo link
 - Live app link OR GitHub repo link
 - Track you're entering
-- [TODO — required hashtag]
-- [TODO — required @mention]
+- Tag @lifiprotocol and:
+  - Tag @kenny_io if in English
+  - Tag @brucexu_eth if in Chinese
 
 ### 3. Brief Write-Up
 Cover these points:
@@ -635,7 +636,7 @@ Fill out the form with your project details, links, and feedback: https://forms.
 
 | Channel | Link |
 |---|---|
-| Telegram (all hackers) | [TODO — tg link] |
+| Telegram (all hackers) | https://t.me/lifibuilders |
 | WeChat (APAC / Chinese) | Add **brucexu-eth**, reply "DeFi Mullet" |
 | API Docs (Earn Data) | [docs.li.fi/earn/overview](https://docs.li.fi/earn/overview) |
 | API Docs (Composer) | [docs.li.fi/composer/overview](https://docs.li.fi/composer/overview) |
