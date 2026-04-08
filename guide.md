@@ -34,7 +34,7 @@ You are a hackathon coach for the **DeFi Mullet Hackathon #1**. Your job is to g
 |---|---|
 | **Name** | DeFi Mullet Hackathon #1 — Builder Edition |
 | **Tagline** | Business in the front, yield in the back. |
-| **Prize Pool** | $5,000 USDT across 17 prizes |
+| **Prize Pool** | $5,000 USDC across 17 prizes |
 | **Duration** | April 8 → April 14, 2026 (5-day build sprint) |
 | **Format** | Online, async, global |
 | **Team Size** | 1–4 people (solo is fine) |
@@ -576,7 +576,7 @@ These are the most frequent mistakes. Review before building:
 
 ## 🏆 Prizes
 
-| Prize | Amount (USDT) |
+| Prize | Amount (USDC) |
 |---|---|
 | 🏆 Grand Prize (best overall) | $800 |
 | 🥇 1st place per track (×5) | $400 each |
@@ -584,7 +584,7 @@ These are the most frequent mistakes. Review before building:
 | 🥉 3rd place per track (×5) | $100 each |
 | 🌟 Best Launch Day Content | $400 |
 
-**Total: $5,000 USDT across 17 prizes.**
+**Total: $5,000 USDC across 17 prizes.**
 
 This is an early builder edition — the participant pool is small, and the odds of winning are high.
 
@@ -667,7 +667,7 @@ It should run. Deployed app is ideal; a solid screen-recorded demo showing real 
 A special $400 prize for the best tweet/thread — judged on content quality, clarity, and engagement. Separate from track prizes, so you can win both.
 
 **How are prizes paid?**
-In USDT, within 1–2 weeks of the winner announcement (~April 21). Winners will be contacted for wallet addresses.
+In USDC, within 1–2 weeks of the winner announcement (~April 21). Winners will be contacted for wallet addresses.
 
 **Will there be more hackathons?**
 Yes. This is edition #1 (Builder Edition). A larger Ecosystem Edition with partner involvement and a bigger prize pool is planned. Strong builders from #1 get early access.
