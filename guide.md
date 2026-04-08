@@ -53,7 +53,7 @@ April 8 ......... Registration opens + Hackathon begins
                    API docs & starter templates go live
 April 8–13 ...... Build sprint (5 days)
 April 13 ........ ⚠️  Recommended: finalize demo video & draft tweet
-April 14 ........ ⏰ SUBMISSION DAY (also LI.FI Earn public launch)
+April 14 ........ ⏰ SUBMISSION DAY
 ~April 21 ....... 🏆 Winners announced
 ```
 
