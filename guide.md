@@ -578,11 +578,11 @@ These are the most frequent mistakes. Review before building:
 
 | Prize | Amount (USDC) |
 |---|---|
-| 🏆 Grand Prize (best overall) | $800 |
+| 🏆 Grand Prize (best overall) | $1000 |
 | 🥇 1st place per track (×5) | $400 each |
 | 🥈 2nd place per track (×5) | $200 each |
 | 🥉 3rd place per track (×5) | $100 each |
-| 🌟 Best Launch Day Content | $400 |
+| 🌟 Best Launch Day Content | $200 |
 
 **Total: $5,000 USDC across 17 prizes.**
 
