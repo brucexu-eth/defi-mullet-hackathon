@@ -64,7 +64,7 @@ You MUST post your submission tweet within one of these windows:
 | Window | Timezone | Time |
 |---|---|---|
 | **Global** | Eastern Time (ET) | April 14, 09:00 AM – 12:00 PM |
-| **APAC** | UTC+8 | April 14, 09:00 AM – 12:00 PM |
+| **APAC** | UTC+8 | April 15, 09:00 AM – 12:00 PM |
 
 Choose the window that matches your region. Tweets posted outside these windows will NOT be accepted.
 
